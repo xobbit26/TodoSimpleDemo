@@ -1,42 +1,57 @@
-﻿Console.WriteLine("If yuo want to create a new todo, please enter \"new\".");
-Console.WriteLine("If yuo want to see the list of todos, please enter  \"list\".");
+﻿var todoService = new TodoService();
+Run();
 
-var appParam = Console.ReadLine();
-var todoService = new TodoService();
 
-if (appParam == "new")
+//Program
+void Run()
 {
-    Console.WriteLine("Write the text what you want to do:");
-    var text = Console.ReadLine();
-    todoService.Add(text);
+    Console.WriteLine("If yuo want to create a new todo, please enter \"new\".");
+    Console.WriteLine("If yuo want to see the list of todos, please enter  \"list\".");
 
-    Console.WriteLine("Item has been added successfully.");
-}
-else if (appParam == "list")
-{
-    var todoList = todoService.List();
-    if (todoList == null || todoList.Length == 0)
+    var appParam = Console.ReadLine();
+
+    if (appParam == "new")
     {
-        Console.WriteLine("The list is empty. Please add items to list.");
-    }
-}
+        Console.WriteLine("Write the text what you want to do:");
+        var text = Console.ReadLine();
+        todoService.Add(text);
 
+        Console.WriteLine("Item has been added successfully.");
+    }
+    else if (appParam == "list")
+    {
+        var todoList = todoService.List();
+        if (todoList == null || todoList.Count == 0)
+        {
+            Console.WriteLine("The list is empty. Please add items to list.");
+        }
+        else
+        {
+            for (var i = 0; i < todoList.Count; i++)
+            {
+                Console.WriteLine("" + todoList[i] + "");
+            }
+        }
+    }
+
+    Run();
+}
 
 class TodoService
 {
-    private static string[] todoList;
+    private static List<string> todoList;
 
     public void Add(string todoText)
     {
         if (todoList == null)
         {
-            todoList = new string[10];
+            todoList = new List<string>();
         }
 
-        todoList[todoList.Length - 1] = todoText;
+        todoList.Add(todoText);
     }
 
-    public string[] List()
+    public List<string> List()
     {
         return todoList;
     }

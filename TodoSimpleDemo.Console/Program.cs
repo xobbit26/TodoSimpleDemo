@@ -1,58 +1,162 @@
-﻿var todoService = new TodoService();
-Run();
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-
-//Program
-void Run()
+class Todo
 {
-    Console.WriteLine("If yuo want to create a new todo, please enter \"new\".");
-    Console.WriteLine("If yuo want to see the list of todos, please enter  \"list\".");
+    public string TaskDescription { get; set; }
+    public DateTime CreationTime { get; set; }
+    public bool IsCompleted { get; set; }
 
-    var appParam = Console.ReadLine();
-
-    if (appParam == "new")
+    public Todo(string taskDescription)
     {
-        Console.WriteLine("Write the text what you want to do:");
-        var text = Console.ReadLine();
-        todoService.Add(text);
-
-        Console.WriteLine("Item has been added successfully.");
+        TaskDescription = taskDescription;
+        CreationTime = DateTime.Now;
+        IsCompleted = false;
     }
-    else if (appParam == "list")
+}
+
+class Program
+{
+    static List<Todo> tasks = new();
+
+    static void Main()
     {
-        var todoList = todoService.List();
-        if (todoList == null || todoList.Count == 0)
+        Console.Title = "TODO Application";
+        Console.Clear();
+
+        Console.WriteLine("╔══════════════════════════════════════════╗");
+        Console.WriteLine("║       Welcome to the TODO application    ║");
+        Console.WriteLine("╚══════════════════════════════════════════╝");
+
+        while (true)
         {
-            Console.WriteLine("The list is empty. Please add items to list.");
-        }
-        else
-        {
-            for (var i = 0; i < todoList.Count; i++)
+            Console.WriteLine("\nChoose an option:");
+            Console.WriteLine("1. View Tasks");
+            Console.WriteLine("2. Add Task");
+            Console.WriteLine("3. Mark Task as Completed");
+            Console.WriteLine("4. Exit");
+
+            string choice = Console.ReadLine();
+
+            switch (choice)
             {
-                Console.WriteLine("" + todoList[i] + "");
+                case "1":
+                    ViewTasks();
+                    break;
+                case "2":
+                    AddTask();
+                    break;
+                case "3":
+                    MarkTaskAsCompleted();
+                    break;
+                case "4":
+                    Console.Clear();
+                    Console.WriteLine("Exiting the TODO application. Goodbye!");
+                    return;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    break;
             }
         }
     }
 
-    Run();
-}
-
-class TodoService
-{
-    private static List<string> todoList;
-
-    public void Add(string todoText)
+    static void ViewTasks()
     {
-        if (todoList == null)
+        Console.Clear();
+        Console.WriteLine("Tasks:");
+        Console.WriteLine("╔═══════════════════════════════════════════════════════════════════════════════╗");
+        Console.WriteLine("║  #   ║ Task Description                 ║ Status      ║ Created on            ║");
+        Console.WriteLine("╠══════╬══════════════════════════════════╬═════════════╬═══════════════════════╣");
+
+        var sortedTasks = tasks
+            .OrderBy(t => t.IsCompleted)
+            .ThenBy(t => t.CreationTime)
+            .ToList();
+
+        if (sortedTasks.Count == 0)
         {
-            todoList = new List<string>();
+            Console.WriteLine(
+                "║                                  No tasks available                                  ║");
+        }
+        else
+        {
+            for (int i = 0; i < sortedTasks.Count; i++)
+            {
+                Console.ForegroundColor = sortedTasks[i].IsCompleted ? ConsoleColor.Green : ConsoleColor.Yellow;
+                Console.WriteLine(
+                    $"║ {i + 1,2}   ║ {FormatText(sortedTasks[i].TaskDescription, 36)} ║ {(sortedTasks[i].IsCompleted ? "Completed" : "Pending"),11} ║ {sortedTasks[i].CreationTime.ToString("yyyy-MM-dd HH:mm"),19} ║");
+                Console.ResetColor();
+            }
         }
 
-        todoList.Add(todoText);
+        Console.WriteLine("╚═══════════════════════════════════════════════════════════════════════════════╝");
+        Console.WriteLine();
     }
 
-    public List<string> List()
+    static string FormatText(string text, int length)
     {
-        return todoList;
+        if (text.Length <= length)
+        {
+            return text.PadRight(length);
+        }
+        else
+        {
+            return text.Substring(0, length - 3) + "...";
+        }
+    }
+
+    static void AddTask()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter a new task:");
+        Console.Write(" > ");
+        string newTask = Console.ReadLine();
+        Todo todo = new Todo(newTask);
+        tasks.Add(todo);
+        Console.Clear();
+        Console.WriteLine("Task added successfully!");
+    }
+
+    static void MarkTaskAsCompleted()
+    {
+        ViewTasks();
+
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("No tasks available to mark as completed.");
+            return;
+        }
+
+        Console.Write("Enter the number of the task to mark as completed (or 0 to cancel): ");
+
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber > 0 && taskNumber <= tasks.Count)
+        {
+            tasks[taskNumber - 1].IsCompleted = true;
+            Console.WriteLine($"Marking task '{tasks[taskNumber - 1].TaskDescription}' as completed.");
+        }
+        else if (taskNumber == 0)
+        {
+            Console.Clear();
+            Console.WriteLine("Marking task as completed canceled.");
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Invalid task number. Please try again.");
+        }
+    }
+
+    static string PadText(string text, int length)
+    {
+        if (text.Length <= length)
+        {
+            return text.PadRight(length);
+        }
+        else
+        {
+            return text.Substring(0, length - 3) + "...";
+        }
     }
 }

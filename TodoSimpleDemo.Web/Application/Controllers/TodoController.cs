@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoSimpleDemo.Web.Application.Entities;
+using TodoSimpleDemo.Domain.Entities;
 
 namespace TodoSimpleDemo.Web.Application.Controllers;
 

@@ -1,4 +1,4 @@
-namespace TodoSimpleDemo.Web.Application.Entities;
+namespace TodoSimpleDemo.Domain.Entities;
 
 public class Todo
 {

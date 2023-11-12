@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoSimpleDemo.Application.Entities;
+using TodoSimpleDemo.Web.Application.Entities;
 
-namespace TodoSimpleDemo.Application.Controllers;
+namespace TodoSimpleDemo.Web.Application.Controllers;
 
 [ApiController]
 [Route("[controller]")]

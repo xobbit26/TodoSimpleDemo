@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoSimpleDemo", "TodoSimpleDemo\TodoSimpleDemo.csproj", "{E0ED475C-DEAF-4485-8A2A-6FBFD77C3B70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoSimpleDemo.Web", "TodoSimpleDemo.Web\TodoSimpleDemo.Web.csproj", "{E0ED475C-DEAF-4485-8A2A-6FBFD77C3B70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoSimpleDemo.Console", "TodoSimpleDemo.Console\TodoSimpleDemo.Console.csproj", "{2D33EADB-DC78-4AA0-A897-85A020B4ECC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnterText.Console", "EnterText.Console\EnterText.Console.csproj", "{2D33EADB-DC78-4AA0-A897-85A020B4ECC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
